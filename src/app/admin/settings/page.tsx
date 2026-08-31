@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Save } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { cleanSettingValue } from "@/lib/utils/formatters";
 import toast from "react-hot-toast";
 
 interface SettingField {
@@ -36,8 +37,8 @@ export default function AdminSettingsPage() {
     const fetchSettings = async () => {
       const { data } = await supabase.from("site_settings").select("key, value");
       const map: Record<string, string> = {};
-      (data ?? []).forEach((s: { key: string; value: string }) => {
-        map[s.key] = typeof s.value === "string" ? s.value : JSON.stringify(s.value);
+      (data ?? []).forEach((s: { key: string; value: unknown }) => {
+        map[s.key] = cleanSettingValue(s.value);
       });
       setSettings(map);
       setLoading(false);
@@ -50,7 +51,7 @@ export default function AdminSettingsPage() {
     try {
       const upserts = Object.entries(settings).map(([key, value]) => ({
         key,
-        value: JSON.stringify(value),
+        value: cleanSettingValue(value),
         updated_at: new Date().toISOString(),
       }));
 

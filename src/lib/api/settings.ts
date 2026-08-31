@@ -1,6 +1,9 @@
 import { createClient } from "@/lib/supabase/server";
 import type { SiteSetting, SiteSettings } from "@/lib/types/database";
 import { SITE_DEFAULTS } from "@/lib/utils/constants";
+import { cleanSettingValue } from "@/lib/utils/formatters";
+
+export { cleanSettingValue };
 
 export async function getAllSettings(): Promise<SiteSettings> {
   const supabase = await createClient();
@@ -10,7 +13,7 @@ export async function getAllSettings(): Promise<SiteSettings> {
 
   const settings: Record<string, string> = {};
   (data as SiteSetting[] | null)?.forEach((s) => {
-    settings[s.key] = typeof s.value === "string" ? s.value : JSON.stringify(s.value);
+    settings[s.key] = cleanSettingValue(s.value);
   });
 
   return {
@@ -38,14 +41,16 @@ export async function getSetting(key: string): Promise<string> {
     .eq("key", key)
     .single();
 
-  return data?.value as string ?? "";
+  return cleanSettingValue(data?.value);
 }
 
 export async function updateSetting(key: string, value: string | number | boolean): Promise<void> {
   const supabase = await createClient();
+  const cleanVal = typeof value === "string" ? cleanSettingValue(value) : value;
   const { error } = await supabase
     .from("site_settings")
-    .upsert({ key, value: JSON.stringify(value), updated_at: new Date().toISOString() }, { onConflict: "key" });
+    .upsert({ key, value: cleanVal, updated_at: new Date().toISOString() }, { onConflict: "key" });
 
   if (error) throw error;
 }
+

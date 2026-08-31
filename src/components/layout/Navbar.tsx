@@ -21,6 +21,7 @@ export default function Navbar({ categories, siteName }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const itemCount = useCartStore((s) => s.getItemCount());
+  const openCart = useCartStore((s) => s.openCart);
 
   useEffect(() => {
     setMounted(true);
@@ -117,8 +118,9 @@ export default function Navbar({ categories, siteName }: NavbarProps) {
 
           {/* Right side */}
           <div className="flex items-center gap-3 md:gap-5">
-            <Link
-              href="/cart"
+            <button
+              onClick={openCart}
+              aria-label="Open cart drawer"
               className="relative flex items-center gap-1.5 transition-colors text-[#3C2415] hover:text-[#8B6F47]"
             >
               <ShoppingCart size={20} />
@@ -132,7 +134,7 @@ export default function Navbar({ categories, siteName }: NavbarProps) {
                   {itemCount}
                 </span>
               )}
-            </Link>
+            </button>
 
             {/* Mobile menu button */}
             <button

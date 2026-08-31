@@ -7,8 +7,9 @@ interface AnnouncementBarProps {
 
 export default function AnnouncementBar({ text, whatsappNumber }: AnnouncementBarProps) {
   const defaultText = "✦ Freshly baked to order · Delivered across Kerala";
-  const content = text && text !== "Freshly baked with love. Delivering happiness across Kerala."
-    ? (text.startsWith("✦") ? text : `✦ ${text}`)
+  const rawText = text?.trim();
+  const content = rawText
+    ? (rawText.startsWith("✦") ? rawText : `✦ ${rawText}`)
     : defaultText;
 
   return (

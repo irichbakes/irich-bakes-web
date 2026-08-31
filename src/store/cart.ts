@@ -4,6 +4,10 @@ import type { OrderItem } from "@/lib/types/database";
 
 interface CartState {
   items: OrderItem[];
+  isOpen: boolean;
+  openCart: () => void;
+  closeCart: () => void;
+  toggleCart: () => void;
   addItem: (item: OrderItem) => void;
   removeItem: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
@@ -16,20 +20,26 @@ export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
       items: [],
+      isOpen: false,
+
+      openCart: () => set({ isOpen: true }),
+      closeCart: () => set({ isOpen: false }),
+      toggleCart: () => set((state) => ({ isOpen: !state.isOpen })),
 
       addItem: (item) =>
         set((state) => {
           const existing = state.items.find((i) => i.product_id === item.product_id);
+          let newItems: OrderItem[];
           if (existing) {
-            return {
-              items: state.items.map((i) =>
-                i.product_id === item.product_id
-                  ? { ...i, quantity: i.quantity + item.quantity }
-                  : i
-              ),
-            };
+            newItems = state.items.map((i) =>
+              i.product_id === item.product_id
+                ? { ...i, quantity: i.quantity + item.quantity }
+                : i
+            );
+          } else {
+            newItems = [...state.items, item];
           }
-          return { items: [...state.items, item] };
+          return { items: newItems, isOpen: true };
         }),
 
       removeItem: (productId) =>
@@ -59,6 +69,7 @@ export const useCartStore = create<CartState>()(
     }),
     {
       name: "irich-cart",
+      partialize: (state) => ({ items: state.items }),
     }
   )
 );

@@ -43,6 +43,7 @@ export interface Product {
   price: number;
   compare_price: number | null;
   category_id: string | null;
+  occasion_id?: string | null;
   image_url: string;
   images: string[];
   is_bestseller: boolean;
@@ -54,6 +55,7 @@ export interface Product {
   created_at: string;
   // Joined
   category?: Category;
+  occasion?: Occasion;
 }
 
 export interface Occasion {

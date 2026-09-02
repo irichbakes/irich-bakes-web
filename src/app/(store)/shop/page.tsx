@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getActiveProducts } from "@/lib/api/products";
 import { getActiveCategories } from "@/lib/api/categories";
+import { getActiveOccasions } from "@/lib/api/occasions";
 import ShopContent from "./ShopContent";
 
 export const metadata: Metadata = {
@@ -9,14 +10,16 @@ export const metadata: Metadata = {
 };
 
 export default async function ShopPage() {
-  const [products, categories] = await Promise.all([
+  const [products, categories, occasions] = await Promise.all([
     getActiveProducts(),
     getActiveCategories(),
+    getActiveOccasions(),
   ]);
 
   return (
     <div className="min-h-screen bg-white">
-      <ShopContent products={products} categories={categories} />
+      <ShopContent products={products} categories={categories} occasions={occasions} />
     </div>
   );
 }
+

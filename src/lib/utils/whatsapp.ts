@@ -12,11 +12,14 @@ interface WhatsAppOrderData {
 
 export function buildWhatsAppMessage(data: WhatsAppOrderData): string {
   const itemLines = data.items
-    .map(
-      (item) =>
-        `${item.quantity}x ${item.name} — ${formatPrice(item.price * item.quantity)}`
-    )
-    .join("\n");
+    .map((item, index) => {
+      let line = `${index + 1}. *${item.name}* (x${item.quantity}) — ${formatPrice(item.price * item.quantity)}`;
+      if (item.image_url) {
+        line += `\n   🖼️ Image: ${item.image_url}`;
+      }
+      return line;
+    })
+    .join("\n\n");
 
   const lines = [
     "🛒 *New Order from iRich Bakes*",
@@ -83,7 +86,7 @@ export function getWhatsAppDirectBuyUrl(
 
   if (product.image_url) {
     lines.push("");
-    lines.push(`*Image:* ${product.image_url}`);
+    lines.push(`🖼️ *Image:* ${product.image_url}`);
   }
 
   lines.push("━━━━━━━━━━━━━━━━━━━");
@@ -91,3 +94,4 @@ export function getWhatsAppDirectBuyUrl(
 
   return getWhatsAppUrl(phoneNumber, lines.join("\n"));
 }
+

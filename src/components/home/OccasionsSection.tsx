@@ -35,15 +35,20 @@ export default function OccasionsSection({ occasions }: OccasionsSectionProps) {
               <Link
                 key={occasion.id}
                 href={`/shop?occasion=${occasion.slug}`}
-                className="group relative rounded-2xl overflow-hidden aspect-square"
+                className="group relative rounded-2xl overflow-hidden aspect-square border border-black/5 shadow-sm hover:shadow-md transition-all duration-300"
               >
                 <ImageWithFallback
                   src={occasion.image_url}
                   alt={occasion.name}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  sizes="(max-width: 640px) 50vw, 200px"
+                  sizes="(max-width: 640px) 50vw, 250px"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent group-hover:from-black/60 transition-colors flex items-end justify-center p-3 sm:p-4">
+                  <span className="w-full bg-white/90 backdrop-blur-md text-[#3C2415] text-xs sm:text-sm font-bold py-2 px-3 rounded-xl shadow-md text-center group-hover:bg-white transition-all transform group-hover:scale-[1.02] truncate">
+                    {occasion.name}
+                  </span>
+                </div>
               </Link>
             ))}
           </div>

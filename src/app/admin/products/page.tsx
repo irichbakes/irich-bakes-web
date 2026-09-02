@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Plus, Pencil, Trash2, X, Search, Filter, Package, Star } from "lucide-react";
+import { Plus, Pencil, Trash2, X, Search, Filter, Package, Star, Calendar } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import ImageUploader from "@/components/admin/ImageUploader";
 import ConfirmModal from "@/components/ui/ConfirmModal";
 import { generateSlug, formatPrice } from "@/lib/utils/formatters";
 import toast from "react-hot-toast";
-import type { Product, Category } from "@/lib/types/database";
+import type { Product, Category, Occasion } from "@/lib/types/database";
 import CustomSelect from "@/components/ui/CustomSelect";
 
 const emptyProduct: Partial<Product> = {
@@ -18,6 +18,7 @@ const emptyProduct: Partial<Product> = {
   price: 0,
   compare_price: null,
   category_id: null,
+  occasion_id: null,
   image_url: "",
   images: [],
   is_bestseller: false,
@@ -31,21 +32,25 @@ const emptyProduct: Partial<Product> = {
 export default function AdminProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [occasions, setOccasions] = useState<Occasion[]>([]);
   const [editing, setEditing] = useState<Partial<Product> | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [selectedCat, setSelectedCat] = useState<string>("all");
+  const [selectedOcc, setSelectedOcc] = useState<string>("all");
 
   const supabase = createClient();
 
   const fetchData = async () => {
-    const [prodRes, catRes] = await Promise.all([
-      supabase.from("products").select("*, category:categories(*)").order("sort_order"),
+    const [prodRes, catRes, occRes] = await Promise.all([
+      supabase.from("products").select("*, category:categories(*), occasion:occasions(*)").order("sort_order"),
       supabase.from("categories").select("*").order("sort_order"),
+      supabase.from("occasions").select("*").order("sort_order"),
     ]);
     setProducts((prodRes.data as Product[]) ?? []);
     setCategories((catRes.data as Category[]) ?? []);
+    setOccasions((occRes.data as Occasion[]) ?? []);
     setLoading(false);
   };
 
@@ -59,8 +64,9 @@ export default function AdminProductsPage() {
       return;
     }
     const slug = editing.slug || generateSlug(editing.name);
-    const { category, ...data } = editing;
+    const { category, occasion, ...data } = editing;
     void category;
+    void occasion;
     const payload = { ...data, slug };
 
     try {
@@ -92,7 +98,8 @@ export default function AdminProductsPage() {
       p.name.toLowerCase().includes(search.toLowerCase()) ||
       p.description?.toLowerCase().includes(search.toLowerCase());
     const matchesCategory = selectedCat === "all" || p.category_id === selectedCat;
-    return matchesSearch && matchesCategory;
+    const matchesOccasion = selectedOcc === "all" || p.occasion_id === selectedOcc;
+    return matchesSearch && matchesCategory && matchesOccasion;
   });
 
   return (
@@ -102,7 +109,7 @@ export default function AdminProductsPage() {
         <div>
           <h1 className="text-2xl font-bold text-[#2A1C15]">Products</h1>
           <p className="text-xs text-[#7A6658] mt-0.5">
-            Manage product catalog, pricing, categories, and inventory.
+            Manage product catalog, pricing, categories, occasions, and inventory.
           </p>
         </div>
 
@@ -128,7 +135,7 @@ export default function AdminProductsPage() {
           />
         </div>
 
-        <div className="flex items-center gap-2 w-full sm:w-auto">
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
           <Filter size={16} className="text-[#8C7567]" />
           <CustomSelect
             options={[
@@ -137,6 +144,14 @@ export default function AdminProductsPage() {
             ]}
             value={selectedCat}
             onChange={(val) => setSelectedCat(val)}
+          />
+          <CustomSelect
+            options={[
+              { value: "all", label: "All Occasions" },
+              ...occasions.map((o) => ({ value: o.id, label: o.name })),
+            ]}
+            value={selectedOcc}
+            onChange={(val) => setSelectedOcc(val)}
             align="right"
           />
         </div>
@@ -165,8 +180,9 @@ export default function AdminProductsPage() {
                 <tr>
                   <th className="px-5 py-3.5">Product</th>
                   <th className="px-5 py-3.5 hidden sm:table-cell">Category</th>
+                  <th className="px-5 py-3.5 hidden md:table-cell">Occasion</th>
                   <th className="px-5 py-3.5">Price</th>
-                  <th className="px-5 py-3.5 hidden md:table-cell">Status</th>
+                  <th className="px-5 py-3.5 hidden lg:table-cell">Status</th>
                   <th className="px-5 py-3.5 text-right">Actions</th>
                 </tr>
               </thead>
@@ -204,6 +220,15 @@ export default function AdminProductsPage() {
                         <span className="text-[#A08B7D]">—</span>
                       )}
                     </td>
+                    <td className="px-5 py-4 hidden md:table-cell text-[#5A4537]">
+                      {p.occasion?.name ? (
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#FAF0E6] text-[#8B6F47] border border-[#E8DCCF] rounded-lg text-xs font-medium">
+                          <Calendar size={11} /> {p.occasion.name}
+                        </span>
+                      ) : (
+                        <span className="text-[#A08B7D]">—</span>
+                      )}
+                    </td>
                     <td className="px-5 py-4">
                       <p className="font-bold text-[#2A1C15]">{formatPrice(p.price)}</p>
                       {p.compare_price && (
@@ -212,7 +237,7 @@ export default function AdminProductsPage() {
                         </p>
                       )}
                     </td>
-                    <td className="px-5 py-4 hidden md:table-cell">
+                    <td className="px-5 py-4 hidden lg:table-cell">
                       <span
                         className={`inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold ${
                           p.is_active
@@ -370,19 +395,36 @@ export default function AdminProductsPage() {
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-[#4A3528] mb-1.5">Category</label>
-                <CustomSelect
-                  options={[
-                    { value: "", label: "No category" },
-                    ...categories.map((c) => ({ value: c.id, label: c.name })),
-                  ]}
-                  value={editing.category_id ?? ""}
-                  onChange={(val) =>
-                    setEditing({ ...editing, category_id: val || null })
-                  }
-                  className="w-full"
-                />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-semibold text-[#4A3528] mb-1.5">Category</label>
+                  <CustomSelect
+                    options={[
+                      { value: "", label: "No category" },
+                      ...categories.map((c) => ({ value: c.id, label: c.name })),
+                    ]}
+                    value={editing.category_id ?? ""}
+                    onChange={(val) =>
+                      setEditing({ ...editing, category_id: val || null })
+                    }
+                    className="w-full"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-[#4A3528] mb-1.5">Occasion (Optional)</label>
+                  <CustomSelect
+                    options={[
+                      { value: "", label: "No occasion (Optional)" },
+                      ...occasions.map((o) => ({ value: o.id, label: o.name })),
+                    ]}
+                    value={editing.occasion_id ?? ""}
+                    onChange={(val) =>
+                      setEditing({ ...editing, occasion_id: val || null })
+                    }
+                    className="w-full"
+                  />
+                </div>
               </div>
 
               <ImageUploader
@@ -433,4 +475,5 @@ export default function AdminProductsPage() {
     </div>
   );
 }
+
 

@@ -4,14 +4,29 @@ import type { Product } from "@/lib/types/database";
 import { unstable_cache, revalidateTag } from "next/cache";
 import { cache } from "react";
 
+// Helper to safely query products with occasion relation, falling back if DB column doesn't exist yet
+async function queryProducts(
+  supabase: ReturnType<typeof createPublicClient>,
+  builder: (selectStr: string) => any
+) {
+  const primary = await builder("*, category:categories(*), occasion:occasions(*)");
+  if (!primary.error) return primary;
+  if (primary.error.code === "PGRST200" || primary.error.message?.includes("occasions")) {
+    return await builder("*, category:categories(*)");
+  }
+  return primary;
+}
+
 export const getActiveProducts = unstable_cache(
   async (): Promise<Product[]> => {
     const supabase = createPublicClient();
-    const { data, error } = await supabase
-      .from("products")
-      .select("*, category:categories(*)")
-      .eq("is_active", true)
-      .order("sort_order", { ascending: true });
+    const { data, error } = await queryProducts(supabase, (selectStr) =>
+      supabase
+        .from("products")
+        .select(selectStr)
+        .eq("is_active", true)
+        .order("sort_order", { ascending: true })
+    );
 
     if (error) throw error;
     return (data as Product[]) ?? [];
@@ -23,13 +38,15 @@ export const getActiveProducts = unstable_cache(
 export const getBestSellers = unstable_cache(
   async (): Promise<Product[]> => {
     const supabase = createPublicClient();
-    const { data, error } = await supabase
-      .from("products")
-      .select("*, category:categories(*)")
-      .eq("is_active", true)
-      .eq("is_bestseller", true)
-      .order("sort_order", { ascending: true })
-      .limit(8);
+    const { data, error } = await queryProducts(supabase, (selectStr) =>
+      supabase
+        .from("products")
+        .select(selectStr)
+        .eq("is_active", true)
+        .eq("is_bestseller", true)
+        .order("sort_order", { ascending: true })
+        .limit(8)
+    );
 
     if (error) throw error;
     return (data as Product[]) ?? [];
@@ -42,12 +59,14 @@ export const getProductsByCategory = cache(async (categoryId: string): Promise<P
   return unstable_cache(
     async (): Promise<Product[]> => {
       const supabase = createPublicClient();
-      const { data, error } = await supabase
-        .from("products")
-        .select("*, category:categories(*)")
-        .eq("is_active", true)
-        .eq("category_id", categoryId)
-        .order("sort_order", { ascending: true });
+      const { data, error } = await queryProducts(supabase, (selectStr) =>
+        supabase
+          .from("products")
+          .select(selectStr)
+          .eq("is_active", true)
+          .eq("category_id", categoryId)
+          .order("sort_order", { ascending: true })
+      );
 
       if (error) throw error;
       return (data as Product[]) ?? [];
@@ -57,15 +76,38 @@ export const getProductsByCategory = cache(async (categoryId: string): Promise<P
   )();
 });
 
+export const getProductsByOccasion = cache(async (occasionId: string): Promise<Product[]> => {
+  return unstable_cache(
+    async (): Promise<Product[]> => {
+      const supabase = createPublicClient();
+      const { data, error } = await queryProducts(supabase, (selectStr) =>
+        supabase
+          .from("products")
+          .select(selectStr)
+          .eq("is_active", true)
+          .eq("occasion_id", occasionId)
+          .order("sort_order", { ascending: true })
+      );
+
+      if (error) throw error;
+      return (data as Product[]) ?? [];
+    },
+    [`products-by-occasion-${occasionId}`],
+    { revalidate: 3600, tags: ["products"] }
+  )();
+});
+
 export const getProductBySlug = cache(async (slug: string): Promise<Product | null> => {
   return unstable_cache(
     async (): Promise<Product | null> => {
       const supabase = createPublicClient();
-      const { data, error } = await supabase
-        .from("products")
-        .select("*, category:categories(*)")
-        .eq("slug", slug)
-        .single();
+      const { data, error } = await queryProducts(supabase, (selectStr) =>
+        supabase
+          .from("products")
+          .select(selectStr)
+          .eq("slug", slug)
+          .single()
+      );
 
       if (error) return null;
       return data as Product;
@@ -85,14 +127,16 @@ export const getRelatedProducts = cache(
     let related: Product[] = [];
 
     if (categoryId) {
-      const { data } = await supabase
-        .from("products")
-        .select("*, category:categories(*)")
-        .eq("is_active", true)
-        .eq("category_id", categoryId)
-        .neq("id", excludeProductId)
-        .order("sort_order", { ascending: true })
-        .limit(limit);
+      const { data } = await queryProducts(supabase, (selectStr) =>
+        supabase
+          .from("products")
+          .select(selectStr)
+          .eq("is_active", true)
+          .eq("category_id", categoryId)
+          .neq("id", excludeProductId)
+          .order("sort_order", { ascending: true })
+          .limit(limit)
+      );
 
       related = (data as Product[]) ?? [];
     }
@@ -101,21 +145,23 @@ export const getRelatedProducts = cache(
       const excludeIds = [excludeProductId, ...related.map((p) => p.id)];
       const needed = limit - related.length;
 
-      let query = supabase
-        .from("products")
-        .select("*, category:categories(*)")
-        .eq("is_active", true)
-        .order("is_bestseller", { ascending: false })
-        .order("sort_order", { ascending: true })
-        .limit(needed);
+      const { data: fallback } = await queryProducts(supabase, (selectStr) => {
+        let q = supabase
+          .from("products")
+          .select(selectStr)
+          .eq("is_active", true)
+          .order("is_bestseller", { ascending: false })
+          .order("sort_order", { ascending: true })
+          .limit(needed);
 
-      if (excludeIds.length === 1) {
-        query = query.neq("id", excludeIds[0]);
-      } else if (excludeIds.length > 1) {
-        query = query.not("id", "in", `(${excludeIds.join(",")})`);
-      }
+        if (excludeIds.length === 1) {
+          q = q.neq("id", excludeIds[0]);
+        } else if (excludeIds.length > 1) {
+          q = q.not("id", "in", `(${excludeIds.join(",")})`);
+        }
+        return q;
+      });
 
-      const { data: fallback } = await query;
       if (fallback && fallback.length > 0) {
         related = [...related, ...(fallback as Product[])];
       }
@@ -127,12 +173,14 @@ export const getRelatedProducts = cache(
 
 export async function searchProducts(query: string): Promise<Product[]> {
   const supabase = createPublicClient();
-  const { data, error } = await supabase
-    .from("products")
-    .select("*, category:categories(*)")
-    .eq("is_active", true)
-    .or(`name.ilike.%${query}%,description.ilike.%${query}%`)
-    .order("sort_order", { ascending: true });
+  const { data, error } = await queryProducts(supabase, (selectStr) =>
+    supabase
+      .from("products")
+      .select(selectStr)
+      .eq("is_active", true)
+      .or(`name.ilike.%${query}%,description.ilike.%${query}%`)
+      .order("sort_order", { ascending: true })
+  );
 
   if (error) throw error;
   return (data as Product[]) ?? [];
@@ -140,10 +188,12 @@ export async function searchProducts(query: string): Promise<Product[]> {
 
 export async function getAllProducts(): Promise<Product[]> {
   const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("products")
-    .select("*, category:categories(*)")
-    .order("sort_order", { ascending: true });
+  const { data, error } = await queryProducts(supabase as any, (selectStr) =>
+    supabase
+      .from("products")
+      .select(selectStr)
+      .order("sort_order", { ascending: true })
+  );
 
   if (error) throw error;
   return (data as Product[]) ?? [];
@@ -151,8 +201,9 @@ export async function getAllProducts(): Promise<Product[]> {
 
 export async function createProduct(product: Partial<Product>): Promise<Product> {
   const supabase = await createClient();
-  const { category, ...productData } = product;
+  const { category, occasion, ...productData } = product;
   void category;
+  void occasion;
   const { data, error } = await supabase
     .from("products")
     .insert(productData)
@@ -166,8 +217,9 @@ export async function createProduct(product: Partial<Product>): Promise<Product>
 
 export async function updateProduct(id: string, product: Partial<Product>): Promise<Product> {
   const supabase = await createClient();
-  const { category, ...productData } = product;
+  const { category, occasion, ...productData } = product;
   void category;
+  void occasion;
   const { data, error } = await supabase
     .from("products")
     .update(productData)
@@ -186,4 +238,3 @@ export async function deleteProduct(id: string): Promise<void> {
   if (error) throw error;
   revalidateTag("products", {});
 }
-

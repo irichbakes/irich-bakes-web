@@ -120,44 +120,44 @@ export default function ImageUploader({
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
-        className={`relative rounded-xl border-2 border-dashed transition-all duration-200 ${
+        className={`relative rounded-xl border-2 border-dashed overflow-hidden transition-all duration-200 ${
           isDragging
-            ? "border-[#8B6F47] bg-[#8B6F47]/10 ring-4 ring-[#8B6F47]/20 scale-[1.01]"
-            : "border-gray-300 hover:border-[#8B6F47] bg-gray-50/50"
+            ? "border-[#7C4D30] bg-[#7C4D30]/10 ring-4 ring-[#7C4D30]/20 scale-[1.01]"
+            : "border-[#E3DAD1] hover:border-[#7C4D30] bg-[#FAF7F4]"
         }`}
       >
         {value ? (
-          <div className="relative p-3 flex items-center gap-4">
-            <div className="relative w-24 h-24 rounded-lg overflow-hidden border border-gray-200 flex-shrink-0 bg-white">
+          <div className="relative p-3 flex flex-col sm:flex-row items-center sm:items-start gap-3">
+            <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border border-[#E3DAD1] flex-shrink-0 bg-white shadow-2xs">
               <ImageWithFallback
                 src={value}
                 alt="Uploaded"
                 fill
                 className="object-cover"
-                sizes="96px"
+                sizes="80px"
               />
             </div>
 
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-semibold text-gray-700 mb-1">
-                Current Image
-              </p>
-              <p className="text-[11px] text-gray-500 truncate mb-2">
-                Drag a new image here to replace, or click below
-              </p>
-              <div className="flex items-center gap-2">
+            <div className="flex-1 min-w-0 text-center sm:text-left space-y-1.5 w-full">
+              <div>
+                <p className="text-xs font-bold text-[#2A1C15]">Current Image</p>
+                <p className="text-[11px] text-[#7A6658] truncate">
+                  Drag a new image here to replace, or click below
+                </p>
+              </div>
+              <div className="flex items-center justify-center sm:justify-start flex-wrap gap-2 pt-0.5">
                 <button
                   type="button"
                   onClick={() => fileRef.current?.click()}
                   disabled={uploading}
-                  className="px-2.5 py-1 text-xs font-medium text-[#8B6F47] bg-white border border-[#8B6F47]/30 rounded-md hover:bg-[#8B6F47]/5 transition-colors disabled:opacity-50"
+                  className="px-2.5 py-1 text-xs font-semibold text-[#7C4D30] bg-white border border-[#7C4D30]/30 rounded-lg hover:bg-[#FAF7F4] transition-colors disabled:opacity-50 shadow-2xs"
                 >
                   Change File
                 </button>
                 <button
                   type="button"
                   onClick={() => onChange("")}
-                  className="px-2.5 py-1 text-xs font-medium text-red-600 bg-white border border-red-200 rounded-md hover:bg-red-50 transition-colors"
+                  className="px-2.5 py-1 text-xs font-semibold text-rose-600 bg-white border border-rose-200 rounded-lg hover:bg-rose-50 transition-colors shadow-2xs"
                 >
                   Remove
                 </button>
@@ -166,7 +166,7 @@ export default function ImageUploader({
 
             {/* Drag overlay on top of existing image */}
             {isDragging && (
-              <div className="absolute inset-0 bg-[#3C2415]/80 backdrop-blur-xs rounded-xl flex items-center justify-center text-white text-xs font-medium z-10 animate-fade-in">
+              <div className="absolute inset-0 bg-[#251811]/85 backdrop-blur-xs rounded-xl flex items-center justify-center text-white text-xs font-medium z-10 animate-fade-in">
                 Drop new image to replace
               </div>
             )}

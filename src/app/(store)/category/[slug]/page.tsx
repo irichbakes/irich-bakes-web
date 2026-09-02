@@ -1,13 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getCategoryBySlug } from "@/lib/api/categories";
+import { getActiveCategories, getCategoryBySlug } from "@/lib/api/categories";
 import { getProductsByCategory } from "@/lib/api/products";
 import ProductGrid from "@/components/product/ProductGrid";
 import ImageWithFallback from "@/components/ui/ImageWithFallback";
 
 interface CategoryPageProps {
   params: Promise<{ slug: string }>;
+}
+
+export async function generateStaticParams() {
+  try {
+    const categories = await getActiveCategories();
+    return categories.map((cat) => ({ slug: cat.slug }));
+  } catch {
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {

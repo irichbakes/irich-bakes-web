@@ -1,13 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getProductBySlug, getRelatedProducts } from "@/lib/api/products";
+import { getActiveProducts, getProductBySlug, getRelatedProducts } from "@/lib/api/products";
 import { getAllSettings } from "@/lib/api/settings";
 import ProductDetailClient from "./ProductDetailClient";
 import ProductGrid from "@/components/product/ProductGrid";
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
+}
+
+export async function generateStaticParams() {
+  try {
+    const products = await getActiveProducts();
+    return products.map((prod) => ({ slug: prod.slug }));
+  } catch {
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {

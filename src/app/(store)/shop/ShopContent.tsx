@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { Search, SlidersHorizontal, X, Check, RotateCcw } from "lucide-react";
 import ProductGrid from "@/components/product/ProductGrid";
+import CustomSelect from "@/components/ui/CustomSelect";
 import type { Product, Category } from "@/lib/types/database";
 
 interface ShopContentProps {
@@ -119,17 +120,15 @@ export default function ShopContent({ products, categories }: ShopContentProps) 
 
         {/* Desktop Sort Dropdown */}
         <div className="hidden md:block">
-          <select
+          <CustomSelect
+            options={sortOptions.map((opt) => ({
+              value: opt.value,
+              label: `Sort by: ${opt.label}`,
+            }))}
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            className="px-4 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#8B6F47] transition shadow-sm cursor-pointer"
-          >
-            {sortOptions.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                Sort by: {opt.label}
-              </option>
-            ))}
-          </select>
+            onChange={(val) => setSortBy(val)}
+            align="right"
+          />
         </div>
       </div>
 

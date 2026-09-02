@@ -1,6 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, ChevronDown } from "lucide-react";
 import type { SiteSettings } from "@/lib/types/database";
 import type { Category } from "@/lib/types/database";
 import NewsletterForm from "./NewsletterForm";
@@ -12,14 +15,16 @@ interface FooterProps {
 
 export default function Footer({ settings, categories }: FooterProps) {
   const currentYear = new Date().getFullYear();
+  const [shopOpen, setShopOpen] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
 
   return (
     <footer className="bg-[#3C2415] text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12">
           {/* Brand */}
-          <div>
-            <div className="mb-5">
+          <div className="pb-4 sm:pb-0 border-b sm:border-b-0 border-white/10">
+            <div className="mb-4">
               <Link href="/" className="inline-block bg-white px-3.5 py-2 rounded-xl shadow-sm hover:opacity-95 transition-opacity">
                 <Image
                   src="/irich-logo.png"
@@ -58,10 +63,26 @@ export default function Footer({ settings, categories }: FooterProps) {
             </div>
           </div>
 
-          {/* Shop Links */}
-          <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider mb-4">Shop</h4>
-            <ul className="space-y-2.5">
+          {/* Shop Links (Collapsible Accordion on Mobile) */}
+          <div className="pb-4 sm:pb-0 border-b sm:border-b-0 border-white/10">
+            <button
+              type="button"
+              onClick={() => setShopOpen(!shopOpen)}
+              className="w-full flex items-center justify-between sm:mb-4 text-left sm:cursor-default"
+            >
+              <h4 className="text-sm font-semibold uppercase tracking-wider">Shop</h4>
+              <ChevronDown
+                size={16}
+                className={`sm:hidden text-[#C4A882] transition-transform duration-200 ${
+                  shopOpen ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+            <ul
+              className={`space-y-2.5 overflow-hidden transition-all duration-200 ${
+                shopOpen ? "max-h-96 mt-3 sm:mt-0" : "max-h-0 sm:max-h-none hidden sm:block"
+              }`}
+            >
               <li>
                 <Link href="/shop" className="text-sm text-gray-300 hover:text-white transition-colors">
                   All Products
@@ -77,10 +98,26 @@ export default function Footer({ settings, categories }: FooterProps) {
             </ul>
           </div>
 
-          {/* Contact */}
-          <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider mb-4">Contact</h4>
-            <ul className="space-y-3">
+          {/* Contact Details (Collapsible Accordion on Mobile) */}
+          <div className="pb-4 sm:pb-0 border-b sm:border-b-0 border-white/10">
+            <button
+              type="button"
+              onClick={() => setContactOpen(!contactOpen)}
+              className="w-full flex items-center justify-between sm:mb-4 text-left sm:cursor-default"
+            >
+              <h4 className="text-sm font-semibold uppercase tracking-wider">Contact</h4>
+              <ChevronDown
+                size={16}
+                className={`sm:hidden text-[#C4A882] transition-transform duration-200 ${
+                  contactOpen ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+            <ul
+              className={`space-y-3 overflow-hidden transition-all duration-200 ${
+                contactOpen ? "max-h-96 mt-3 sm:mt-0" : "max-h-0 sm:max-h-none hidden sm:block"
+              }`}
+            >
               {settings.phone && (
                 <li className="flex items-start gap-2.5">
                   <Phone size={14} className="text-[#C4A882] mt-0.5 flex-shrink-0" />

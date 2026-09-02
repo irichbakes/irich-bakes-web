@@ -81,6 +81,7 @@ export interface NewsletterSubscriber {
   id: string;
   email: string;
   is_active: boolean;
+  is_read: boolean;
   created_at: string;
 }
 

@@ -22,7 +22,6 @@ const settingGroups: SettingGroup[] = [
       { key: "site_name", label: "Site Name", type: "text" },
       { key: "tagline", label: "Tagline", type: "text" },
       { key: "announcement_text", label: "Announcement Bar Text", type: "text" },
-      { key: "currency_symbol", label: "Currency Symbol", type: "text" },
     ],
   },
   {

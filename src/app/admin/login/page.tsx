@@ -68,16 +68,16 @@ export default function AdminLoginPage() {
           className="bg-white rounded-3xl p-7 sm:p-8 shadow-2xl border border-[#E3DAD1] space-y-5"
         >
           <div className="space-y-1.5">
-            <label className="block text-xs font-semibold text-[#4A3528]">Email Address</label>
+            <label className="block text-xs font-semibold text-[#4A3528]">Username</label>
             <div className="relative">
               <Mail size={17} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#A08B7D]" />
               <input
-                type="email"
+                type="text"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="w-full pl-10 pr-4 py-2.5 bg-[#FAF7F4] border border-[#E3DAD1] rounded-xl text-xs text-[#2A1C15] outline-none focus:border-[#7C4D30] focus:ring-2 focus:ring-[#7C4D30]/15"
-                placeholder="admin@irich.co.in"
+                placeholder="Username"
               />
             </div>
           </div>

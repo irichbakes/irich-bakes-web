@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Save, Store, PhoneCall, Share2, Globe } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { cleanSettingValue } from "@/lib/utils/formatters";
+import { cleanSettingValue, saveAllSettings } from "@/lib/api/settings";
 import toast from "react-hot-toast";
 
 interface SettingGroup {
@@ -70,20 +70,8 @@ export default function AdminSettingsPage() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      const upserts = Object.entries(settings).map(([key, value]) => ({
-        key,
-        value: cleanSettingValue(value),
-        updated_at: new Date().toISOString(),
-      }));
-
-      for (const upsert of upserts) {
-        const { error } = await supabase
-          .from("site_settings")
-          .upsert(upsert, { onConflict: "key" });
-        if (error) throw error;
-      }
-
-      toast.success("Settings saved successfully! Refresh the site to see changes.");
+      await saveAllSettings(settings);
+      toast.success("Settings saved successfully! Changes are live on the storefront.");
     } catch {
       toast.error("Failed to save settings");
     } finally {

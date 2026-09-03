@@ -24,8 +24,8 @@ export default async function ContactPage() {
     {
       icon: Mail,
       label: "Email",
-      value: settings.email || "hello@irichbakes.co.in",
-      href: `mailto:${settings.email || "hello@irichbakes.co.in"}`,
+      value: settings.email || "info@irichbakes.co.in",
+      href: `mailto:${settings.email || "info@irichbakes.co.in"}`,
     },
     {
       icon: MapPin,

@@ -61,4 +61,23 @@ export async function updateSetting(key: string, value: string | number | boolea
   revalidateTag("settings", {});
 }
 
+export async function saveAllSettings(settingsMap: Record<string, string>): Promise<void> {
+  "use server";
+  const supabase = await createClient();
+  const upserts = Object.entries(settingsMap).map(([key, value]) => ({
+    key,
+    value: typeof value === "string" ? cleanSettingValue(value) : value,
+    updated_at: new Date().toISOString(),
+  }));
+
+  if (upserts.length > 0) {
+    const { error } = await supabase
+      .from("site_settings")
+      .upsert(upserts, { onConflict: "key" });
+    if (error) throw error;
+  }
+
+  revalidateTag("settings", {});
+}
+
 

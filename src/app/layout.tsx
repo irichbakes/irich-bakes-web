@@ -3,9 +3,9 @@ import ToastProvider from "@/components/ui/ToastProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "iRich Bakes | Premium Homemade Bakes",
-  description: "Premium homemade bakes crafted with care using the finest ingredients. Freshly baked cookies, cakes, muffins, and more delivered across Kerala.",
-  keywords: "bakery, homemade bakes, cookies, cakes, muffins, Kerala, premium bakes",
+  title: "iRich Bakes | Fresh Cakes & Bakery",
+  description: "Freshly baked cookies, cakes, muffins, and treats made with quality ingredients and delivered across Kerala.",
+  keywords: "bakery, cakes, cookies, muffins, Kerala, fresh bakes",
   icons: {
     icon: "/irich-logo.png",
     apple: "/irich-logo.png",

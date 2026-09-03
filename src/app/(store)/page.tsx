@@ -9,20 +9,22 @@ import { getActiveCategories } from "@/lib/api/categories";
 import { getBestSellers } from "@/lib/api/products";
 import { getActiveOccasions } from "@/lib/api/occasions";
 import { getActiveTestimonials } from "@/lib/api/testimonials";
+import { getAllSettings } from "@/lib/api/settings";
 
 export default async function HomePage() {
-  const [banners, categories, bestSellers, occasions, testimonials] =
+  const [banners, categories, bestSellers, occasions, testimonials, settings] =
     await Promise.all([
       getActiveBanners(),
       getActiveCategories(),
       getBestSellers(),
       getActiveOccasions(),
       getActiveTestimonials(),
+      getAllSettings(),
     ]);
 
   return (
     <>
-      <HeroBanner banners={banners} />
+      <HeroBanner banners={banners} whatsappNumber={settings.whatsapp_number} />
       <CategoryGrid categories={categories} />
       <BestSellers products={bestSellers} />
       <FeatureStrip />

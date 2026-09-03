@@ -5,13 +5,18 @@ import { ChevronLeft, ChevronRight, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import ImageWithFallback from "@/components/ui/ImageWithFallback";
 import type { Banner } from "@/lib/types/database";
+import { SITE_DEFAULTS } from "@/lib/utils/constants";
 
 interface HeroBannerProps {
   banners: Banner[];
+  whatsappNumber?: string;
 }
 
-export default function HeroBanner({ banners }: HeroBannerProps) {
+export default function HeroBanner({ banners, whatsappNumber }: HeroBannerProps) {
   const [current, setCurrent] = useState(0);
+
+  const cleanPhone = (whatsappNumber || SITE_DEFAULTS.whatsapp).replace(/[^0-9]/g, "");
+  const whatsappUrl = `https://wa.me/${cleanPhone}`;
 
   const next = useCallback(() => {
     setCurrent((prev) => (prev + 1) % (banners.length || 1));
@@ -39,7 +44,7 @@ export default function HeroBanner({ banners }: HeroBannerProps) {
               Freshly Baked.<br />Made for Moments.
             </h1>
             <p className="text-[#5A4535] text-sm sm:text-base md:text-lg mb-6 sm:mb-8 max-w-[290px] sm:max-w-xl leading-relaxed font-normal">
-              Premium homemade bakes crafted with care using only the finest ingredients.
+              Freshly baked cookies, cakes, and treats made with quality ingredients.
             </p>
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 max-w-[250px] sm:max-w-none">
               <Link
@@ -49,7 +54,7 @@ export default function HeroBanner({ banners }: HeroBannerProps) {
                 Shop Our Bakes →
               </Link>
               <a
-                href="https://wa.me/916238123456"
+                href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white text-[#3C2415] font-bold rounded-full border-2 border-[#3C2415] shadow-md hover:shadow-lg active:scale-[0.98] transition-all text-xs sm:text-sm tracking-wider text-center"
@@ -129,7 +134,7 @@ export default function HeroBanner({ banners }: HeroBannerProps) {
           </h1>
 
           <p className="text-[#5A4535] text-sm sm:text-base md:text-lg mb-6 sm:mb-8 max-w-[290px] sm:max-w-xl leading-relaxed font-normal">
-            {banners[current]?.subtitle || "Premium homemade bakes crafted with care using the finest ingredients."}
+            {banners[current]?.subtitle || "Freshly baked cookies, cakes, and treats made with quality ingredients."}
           </p>
 
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 max-w-[250px] sm:max-w-none">
@@ -150,7 +155,7 @@ export default function HeroBanner({ banners }: HeroBannerProps) {
             )}
 
             <a
-              href="https://wa.me/916238123456"
+              href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white text-[#3C2415] font-bold rounded-full border-2 border-[#3C2415] shadow-md hover:shadow-lg active:scale-[0.98] transition-all text-xs sm:text-sm tracking-wider text-center"

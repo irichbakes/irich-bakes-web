@@ -7,7 +7,7 @@ import { getAllSettings } from "@/lib/api/settings";
 export const metadata: Metadata = {
   title: "About Us | iRich Bakes",
   description:
-    "Learn about iRich Bakes — our story, values, and commitment to crafting premium homemade bakes with love.",
+    "Learn about iRich Bakes — our story, values, and commitment to crafting fresh bakes with quality ingredients.",
 };
 
 export default async function AboutPage() {
@@ -23,7 +23,7 @@ export default async function AboutPage() {
             <div className="lg:col-span-7 space-y-5 text-left">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-[#C4A882] text-xs font-semibold uppercase tracking-wider">
                 <Sparkles size={14} />
-                <span>Artisanal Bakery</span>
+                <span>Fresh Bakery</span>
               </div>
 
               <h1
@@ -34,7 +34,7 @@ export default async function AboutPage() {
               </h1>
 
               <p className="text-gray-300 text-sm sm:text-base leading-relaxed max-w-xl">
-                At <strong className="text-white font-semibold">{settings.site_name}</strong>, we believe every moment deserves a special treat. We craft premium, 100% preservative-free homemade bakes using real butter and pure ingredients.
+                At <strong className="text-white font-semibold">{settings.site_name}</strong>, we believe every moment deserves a special treat. We craft fresh, 100% preservative-free bakes using real butter and pure ingredients.
               </p>
 
               <div className="flex items-center gap-3 pt-2">
@@ -72,7 +72,7 @@ export default async function AboutPage() {
                       <UtensilsCrossed size={16} />
                     </div>
                     <div>
-                      <p className="text-xs font-bold">Artisanal Master Bakers</p>
+                      <p className="text-xs font-bold">Expert Master Bakers</p>
                       <p className="text-[10px] text-[#7A6658]">Pure Butter & Real Ingredients</p>
                     </div>
                   </div>
@@ -94,7 +94,7 @@ export default async function AboutPage() {
             {[
               { label: "Preservative Free", value: "100%" },
               { label: "Happy Customers", value: "10,000+" },
-              { label: "Artisanal Recipes", value: "50+" },
+              { label: "Special Recipes", value: "50+" },
               { label: "Order Freshness", value: "Same-Day" },
             ].map((stat, i) => (
               <div key={i} className="p-3.5 rounded-xl bg-[#FAF7F4] border border-[#E3DAD1]">
@@ -117,10 +117,10 @@ export default async function AboutPage() {
             Who We Are
           </h2>
           <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
-            At {settings.site_name}, born from a passion for baking and a commitment to quality, we craft premium homemade bakes using only the finest ingredients — no preservatives, no shortcuts, just pure love in every bite.
+            At {settings.site_name}, born from a passion for baking and a commitment to quality, we craft fresh bakes using only the finest ingredients — no preservatives, no shortcuts, just pure goodness in every bite.
           </p>
           <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
-            From our kitchen in Kerala, we deliver freshly baked cookies, cakes, muffins, and more straight to your doorstep. Every product is made fresh to order, ensuring you experience the warmth and goodness of real homemade baking.
+            From our bakery in Kerala, we deliver freshly baked cookies, cakes, muffins, and more straight to your doorstep. Every product is made fresh to order, ensuring you experience the warmth and taste of fresh baking.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
@@ -130,7 +130,7 @@ export default async function AboutPage() {
             </div>
             <div className="flex items-center gap-2 p-3 bg-white rounded-xl border border-[#EBE4DC] text-xs font-semibold text-[#3C2415]">
               <CheckCircle2 size={16} className="text-[#7C4D30] flex-shrink-0" />
-              <span>Small Batch Artisanal Baking</span>
+              <span>Fresh Batch Baking</span>
             </div>
             <div className="flex items-center gap-2 p-3 bg-white rounded-xl border border-[#EBE4DC] text-xs font-semibold text-[#3C2415]">
               <CheckCircle2 size={16} className="text-[#7C4D30] flex-shrink-0" />

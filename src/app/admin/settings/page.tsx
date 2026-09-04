@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { Save, Store, PhoneCall, Share2, Globe } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { cleanSettingValue, saveAllSettings } from "@/lib/api/settings";
+import { cleanSettingValue } from "@/lib/api/settings";
+import { saveAllSettings } from "./actions";
 import toast from "react-hot-toast";
 
 interface SettingGroup {

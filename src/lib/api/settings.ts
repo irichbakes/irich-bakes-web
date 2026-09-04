@@ -1,9 +1,8 @@
-import { createClient } from "@/lib/supabase/server";
 import { createPublicClient } from "@/lib/supabase/public";
 import type { SiteSetting, SiteSettings } from "@/lib/types/database";
 import { SITE_DEFAULTS } from "@/lib/utils/constants";
 import { cleanSettingValue } from "@/lib/utils/formatters";
-import { unstable_cache, revalidateTag } from "next/cache";
+import { unstable_cache } from "next/cache";
 
 export { cleanSettingValue };
 
@@ -49,35 +48,3 @@ export async function getSetting(key: string): Promise<string> {
 
   return cleanSettingValue(data?.value);
 }
-
-export async function updateSetting(key: string, value: string | number | boolean): Promise<void> {
-  const supabase = await createClient();
-  const cleanVal = typeof value === "string" ? cleanSettingValue(value) : value;
-  const { error } = await supabase
-    .from("site_settings")
-    .upsert({ key, value: cleanVal, updated_at: new Date().toISOString() }, { onConflict: "key" });
-
-  if (error) throw error;
-  revalidateTag("settings", {});
-}
-
-export async function saveAllSettings(settingsMap: Record<string, string>): Promise<void> {
-  "use server";
-  const supabase = await createClient();
-  const upserts = Object.entries(settingsMap).map(([key, value]) => ({
-    key,
-    value: typeof value === "string" ? cleanSettingValue(value) : value,
-    updated_at: new Date().toISOString(),
-  }));
-
-  if (upserts.length > 0) {
-    const { error } = await supabase
-      .from("site_settings")
-      .upsert(upserts, { onConflict: "key" });
-    if (error) throw error;
-  }
-
-  revalidateTag("settings", {});
-}
-
-

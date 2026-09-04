@@ -34,22 +34,51 @@ export default function HeroBanner({ banners, whatsappNumber }: HeroBannerProps)
 
   if (banners.length === 0) {
     return (
-      <section className="relative -mt-16 md:-mt-20 bg-gradient-to-r from-[#F5F0EB] to-[#EDE3D7] overflow-hidden min-h-[760px] sm:min-h-[820px] md:min-h-[640px] flex items-start md:items-center pt-24 sm:pt-28 md:pt-32 pb-16">
+      <section className="relative -mt-16 md:-mt-20 bg-[#FAF6F0] overflow-hidden min-h-[760px] sm:min-h-[820px] md:min-h-[640px] flex items-start md:items-center pt-24 sm:pt-28 md:pt-32 pb-16">
         <div className="relative z-20 max-w-7xl mx-auto px-5 sm:px-6 w-full py-12 md:py-16">
           <div className="max-w-2xl">
-            <h1
-              className="text-4xl sm:text-5xl md:text-6xl font-bold text-[#3C2415] mb-2 sm:mb-3 leading-[1.15]"
-              style={{ fontFamily: "'Instrument Sans', sans-serif" }}
-            >
-              Freshly Baked.<br />Made for Moments.
+            <div className="flex items-center gap-3 mb-2 sm:mb-3">
+              <span className="hero-script text-3xl sm:text-4xl leading-none">Baked for</span>
+              <span className="hero-script-line shrink-0" />
+              <svg
+                className="hero-script-heart shrink-0 rotate-[15deg]"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#B47A32"
+                strokeWidth="1.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+              </svg>
+            </div>
+            <h1 className="hero-heading text-4xl sm:text-5xl md:text-6xl lg:text-[68px] font-bold leading-[1.12] tracking-tight mb-2">
+              <span className="text-[#0B1B32]">Good Moments,</span>
+              <br />
+              <span className="text-[#B47A32]">Everyday.</span>
             </h1>
-            <p className="text-[#5A4535] text-sm sm:text-base md:text-lg mb-6 sm:mb-8 max-w-[290px] sm:max-w-xl leading-relaxed font-normal">
-              Freshly baked cookies, cakes, and treats made with quality ingredients.
+
+            {/* Decorative leaf divider */}
+            <div className="flex items-center gap-3 my-4 sm:my-5 max-w-[280px]">
+              <div className="flex-1 h-[1px] bg-[#B47A32]/40" />
+              <svg
+                className="w-6 h-4 shrink-0 text-[#B47A32]"
+                viewBox="0 0 28 18"
+                fill="currentColor"
+              >
+                <path d="M14 16 C 13 12, 6 10, 3 3 C 8 3, 13 7, 14 16 Z" />
+                <path d="M14 16 C 15 12, 22 10, 25 3 C 20 3, 15 7, 14 16 Z" />
+              </svg>
+              <div className="flex-1 h-[1px] bg-[#B47A32]/40" />
+            </div>
+
+            <p className="text-[#3A322D] text-sm sm:text-base md:text-lg mb-6 sm:mb-8 max-w-[290px] sm:max-w-xl leading-relaxed font-normal">
+              Deliciously baked with the finest ingredients, crafted to bring joy to your everyday moments.
             </p>
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 max-w-[250px] sm:max-w-none">
               <Link
                 href="/shop"
-                className="inline-flex items-center justify-center gap-2 px-7 sm:px-9 py-3.5 bg-[#2E1A0F] hover:bg-[#1E110A] text-white font-medium rounded-full shadow-md hover:shadow-lg active:scale-[0.98] transition-all text-sm tracking-wide text-center"
+                className="inline-flex items-center justify-center gap-2 px-7 sm:px-9 py-3.5 bg-[#0B1B32] hover:bg-[#071322] text-white font-medium rounded-full shadow-md hover:shadow-lg active:scale-[0.98] transition-all text-sm tracking-wide text-center"
               >
                 Shop Our Bakes →
               </Link>
@@ -57,9 +86,9 @@ export default function HeroBanner({ banners, whatsappNumber }: HeroBannerProps)
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white text-[#3C2415] font-bold rounded-full border-2 border-[#3C2415] shadow-md hover:shadow-lg active:scale-[0.98] transition-all text-xs sm:text-sm tracking-wider text-center"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white text-[#0B1B32] font-bold rounded-full border-2 border-[#0B1B32] shadow-md hover:shadow-lg active:scale-[0.98] transition-all text-xs sm:text-sm tracking-wider text-center"
               >
-                <MessageCircle size={16} className="text-[#3C2415]" />
+                <MessageCircle size={16} className="text-[#0B1B32]" />
                 ORDER ON WHATSAPP
               </a>
             </div>
@@ -70,7 +99,7 @@ export default function HeroBanner({ banners, whatsappNumber }: HeroBannerProps)
   }
 
   return (
-    <section className="relative -mt-16 md:-mt-20 overflow-hidden min-h-[760px] sm:min-h-[820px] md:min-h-[640px] lg:min-h-[680px] flex items-start md:items-center bg-[#F5F0EB]">
+    <section className="relative -mt-16 md:-mt-20 overflow-hidden min-h-[760px] sm:min-h-[820px] md:min-h-[640px] lg:min-h-[680px] flex items-start md:items-center bg-[#FAF6F0]">
       {/* Background Images with crossfade */}
       {banners.map((banner, index) => {
         const isActive = index === current;
@@ -92,6 +121,7 @@ export default function HeroBanner({ banners, whatsappNumber }: HeroBannerProps)
                     priority={index === 0}
                     className={`object-cover object-center ${banner.mobile_image_url ? "hidden md:block" : "block"}`}
                     sizes="100vw"
+                    skipOptimization
                   />
                 )}
                 {/* Mobile Image */}
@@ -104,11 +134,12 @@ export default function HeroBanner({ banners, whatsappNumber }: HeroBannerProps)
                     priority={index === 0}
                     className={`object-cover object-bottom md:object-center ${banner.image_url ? "block md:hidden" : "block"}`}
                     sizes="100vw"
+                    skipOptimization
                   />
                 )}
               </>
             ) : (
-              <div className="w-full h-full bg-gradient-to-r from-[#F5F0EB] to-[#EDE3D7]" />
+              <div className="w-full h-full bg-gradient-to-r from-[#FAF6F0] to-[#F5EFEB]" />
             )}
           </div>
         );
@@ -117,38 +148,71 @@ export default function HeroBanner({ banners, whatsappNumber }: HeroBannerProps)
       {/* Content for Current Banner */}
       <div className="relative z-20 max-w-7xl mx-auto px-5 sm:px-6 w-full pt-24 sm:pt-28 md:pt-32 pb-16 md:pb-20">
         <div className="max-w-2xl text-left">
-          <h1
-            className="text-4xl sm:text-5xl md:text-6xl font-bold text-[#3C2415] mb-2 sm:mb-3 leading-[1.15] tracking-tight whitespace-pre-line"
-            style={{ fontFamily: "'Instrument Sans', sans-serif" }}
-          >
+          <div className="flex items-center gap-3 mb-2 sm:mb-3">
+            <span className="hero-script text-3xl sm:text-4xl leading-none">Baked for</span>
+            <span className="hero-script-line shrink-0" />
+            <svg
+              className="hero-script-heart shrink-0 rotate-[15deg]"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#B47A32"
+              strokeWidth="1.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+            </svg>
+          </div>
+          <h1 className="hero-heading text-4xl sm:text-5xl md:text-6xl lg:text-[68px] font-bold leading-[1.12] tracking-tight mb-2">
             {banners[current]?.title ? (
               banners[current].title.split(/\r\n|\r|\n|<br\s*\/?>/gi).map((line, idx, arr) => (
-                <span key={idx}>
+                <span
+                  key={idx}
+                  className={idx === arr.length - 1 && arr.length > 1 ? "text-[#B47A32]" : "text-[#0B1B32]"}
+                >
                   {line}
                   {idx < arr.length - 1 && <br />}
                 </span>
               ))
             ) : (
-              <>Freshly Baked.<br />Made for Moments.</>
+              <>
+                <span className="text-[#0B1B32]">Good Moments,</span>
+                <br />
+                <span className="text-[#B47A32]">Everyday.</span>
+              </>
             )}
           </h1>
 
-          <p className="text-[#5A4535] text-sm sm:text-base md:text-lg mb-6 sm:mb-8 max-w-[290px] sm:max-w-xl leading-relaxed font-normal">
-            {banners[current]?.subtitle || "Freshly baked cookies, cakes, and treats made with quality ingredients."}
+          {/* Decorative leaf divider */}
+          <div className="flex items-center gap-3 my-4 sm:my-5 max-w-[280px]">
+            <div className="flex-1 h-[1px] bg-[#B47A32]/40" />
+            <svg
+              className="w-6 h-4 shrink-0 text-[#B47A32]"
+              viewBox="0 0 28 18"
+              fill="currentColor"
+            >
+              <path d="M14 16 C 13 12, 6 10, 3 3 C 8 3, 13 7, 14 16 Z" />
+              <path d="M14 16 C 15 12, 22 10, 25 3 C 20 3, 15 7, 14 16 Z" />
+            </svg>
+            <div className="flex-1 h-[1px] bg-[#B47A32]/40" />
+          </div>
+
+          <p className="text-[#3A322D] text-sm sm:text-base md:text-lg mb-6 sm:mb-8 max-w-[290px] sm:max-w-xl leading-relaxed font-normal">
+            {banners[current]?.subtitle || "Deliciously baked with the finest ingredients, crafted to bring joy to your everyday moments."}
           </p>
 
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 max-w-[250px] sm:max-w-none">
             {banners[current]?.cta_text && banners[current]?.cta_link ? (
               <Link
                 href={banners[current].cta_link!}
-                className="inline-flex items-center justify-center gap-2 px-7 sm:px-9 py-3.5 bg-[#2E1A0F] hover:bg-[#1E110A] text-white font-medium rounded-full shadow-md hover:shadow-lg active:scale-[0.98] transition-all text-sm tracking-wide text-center"
+                className="inline-flex items-center justify-center gap-2 px-7 sm:px-9 py-3.5 bg-[#0B1B32] hover:bg-[#071322] text-white font-medium rounded-full shadow-md hover:shadow-lg active:scale-[0.98] transition-all text-sm tracking-wide text-center"
               >
                 {banners[current].cta_text} →
               </Link>
             ) : (
               <Link
                 href="/shop"
-                className="inline-flex items-center justify-center gap-2 px-7 sm:px-9 py-3.5 bg-[#2E1A0F] hover:bg-[#1E110A] text-white font-medium rounded-full shadow-md hover:shadow-lg active:scale-[0.98] transition-all text-sm tracking-wide text-center"
+                className="inline-flex items-center justify-center gap-2 px-7 sm:px-9 py-3.5 bg-[#0B1B32] hover:bg-[#071322] text-white font-medium rounded-full shadow-md hover:shadow-lg active:scale-[0.98] transition-all text-sm tracking-wide text-center"
               >
                 Shop Our Bakes →
               </Link>
@@ -158,9 +222,9 @@ export default function HeroBanner({ banners, whatsappNumber }: HeroBannerProps)
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white text-[#3C2415] font-bold rounded-full border-2 border-[#3C2415] shadow-md hover:shadow-lg active:scale-[0.98] transition-all text-xs sm:text-sm tracking-wider text-center"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white text-[#0B1B32] font-bold rounded-full border-2 border-[#0B1B32] shadow-md hover:shadow-lg active:scale-[0.98] transition-all text-xs sm:text-sm tracking-wider text-center"
             >
-              <MessageCircle size={16} className="text-[#3C2415]" />
+              <MessageCircle size={16} className="text-[#0B1B32]" />
               ORDER ON WHATSAPP
             </a>
           </div>

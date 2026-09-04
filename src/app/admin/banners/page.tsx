@@ -7,6 +7,7 @@ import ImageUploader from "@/components/admin/ImageUploader";
 import ConfirmModal from "@/components/ui/ConfirmModal";
 import toast from "react-hot-toast";
 import type { Banner } from "@/lib/types/database";
+import { revalidateBanners } from "./actions";
 
 const emptyBanner: Partial<Banner> = {
   title: "",
@@ -41,12 +42,15 @@ export default function AdminBannersPage() {
     if (!editing) return;
     try {
       if (editing.id) {
-        const { error } = await supabase.from("banners").update(editing).eq("id", editing.id);
+        const { id, created_at, ...updateData } = editing;
+        const { error } = await supabase.from("banners").update(updateData).eq("id", id);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from("banners").insert(editing);
+        const { id, ...insertData } = editing;
+        const { error } = await supabase.from("banners").insert(insertData);
         if (error) throw error;
       }
+      await revalidateBanners();
       toast.success("Banner saved successfully");
       setEditing(null);
       fetchData();
@@ -57,10 +61,16 @@ export default function AdminBannersPage() {
 
   const confirmDelete = async () => {
     if (!deletingId) return;
-    await supabase.from("banners").delete().eq("id", deletingId);
-    toast.success("Banner deleted");
-    setDeletingId(null);
-    fetchData();
+    try {
+      const { error } = await supabase.from("banners").delete().eq("id", deletingId);
+      if (error) throw error;
+      await revalidateBanners();
+      toast.success("Banner deleted");
+      setDeletingId(null);
+      fetchData();
+    } catch {
+      toast.error("Failed to delete banner");
+    }
   };
 
   return (

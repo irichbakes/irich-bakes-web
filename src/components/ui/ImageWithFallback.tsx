@@ -9,6 +9,8 @@ interface ImageWithFallbackProps extends Omit<ImageProps, "src"> {
   src: string | null | undefined;
   fallback?: string;
   targetWidth?: number;
+  /** When true, skips Cloudinary optimisation (f_auto, q_auto, w_*) entirely. */
+  skipOptimization?: boolean;
 }
 
 export default function ImageWithFallback({
@@ -17,15 +19,20 @@ export default function ImageWithFallback({
   alt,
   targetWidth = 800,
   unoptimized,
+  skipOptimization = false,
   ...props
 }: ImageWithFallbackProps) {
-  const initialOptimized = src && src.trim() !== "" ? getOptimizedCloudinaryUrl(src, targetWidth) : fallback;
-  const [imgSrc, setImgSrc] = useState(initialOptimized);
+  const resolveUrl = (rawSrc: string | null | undefined) => {
+    if (!rawSrc || rawSrc.trim() === "") return fallback;
+    return skipOptimization ? rawSrc : getOptimizedCloudinaryUrl(rawSrc, targetWidth);
+  };
+
+  const [imgSrc, setImgSrc] = useState(() => resolveUrl(src));
 
   useEffect(() => {
-    const nextSrc = src && src.trim() !== "" ? getOptimizedCloudinaryUrl(src, targetWidth) : fallback;
-    setImgSrc(nextSrc);
-  }, [src, fallback, targetWidth]);
+    setImgSrc(resolveUrl(src));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [src, fallback, targetWidth, skipOptimization]);
 
   const isCloudinary = typeof imgSrc === "string" && imgSrc.includes("res.cloudinary.com");
 

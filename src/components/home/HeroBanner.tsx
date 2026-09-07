@@ -75,10 +75,10 @@ export default function HeroBanner({ banners, whatsappNumber }: HeroBannerProps)
             <p className="text-[#3A322D] text-sm sm:text-base md:text-lg mb-6 sm:mb-8 max-w-[290px] sm:max-w-xl leading-relaxed font-normal">
               Deliciously baked with the finest ingredients, crafted to bring joy to your everyday moments.
             </p>
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 max-w-[250px] sm:max-w-none">
+            <div className="flex flex-row items-center gap-2.5 sm:gap-4 max-w-full sm:max-w-none">
               <Link
                 href="/shop"
-                className="inline-flex items-center justify-center gap-2 px-7 sm:px-9 py-3.5 bg-[#0B1B32] hover:bg-[#071322] text-white font-medium rounded-full shadow-md hover:shadow-lg active:scale-[0.98] transition-all text-sm tracking-wide text-center"
+                className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-9 py-2.5 sm:py-3.5 bg-[#0B1B32] hover:bg-[#071322] text-white font-medium rounded-lg sm:rounded-full shadow-md hover:shadow-lg active:scale-[0.98] transition-all text-xs sm:text-sm tracking-wide text-center whitespace-nowrap"
               >
                 Shop Our Bakes →
               </Link>
@@ -86,9 +86,9 @@ export default function HeroBanner({ banners, whatsappNumber }: HeroBannerProps)
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white text-[#0B1B32] font-bold rounded-full border-2 border-[#0B1B32] shadow-md hover:shadow-lg active:scale-[0.98] transition-all text-xs sm:text-sm tracking-wider text-center"
+                className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3.5 sm:px-6 py-2.5 sm:py-3.5 bg-white text-[#0B1B32] font-bold rounded-lg sm:rounded-full border-2 border-[#0B1B32] shadow-md hover:shadow-lg active:scale-[0.98] transition-all text-[11px] sm:text-sm tracking-wider text-center whitespace-nowrap"
               >
-                <MessageCircle size={16} className="text-[#0B1B32]" />
+                <MessageCircle size={15} className="text-[#0B1B32]" />
                 ORDER ON WHATSAPP
               </a>
             </div>
@@ -201,18 +201,18 @@ export default function HeroBanner({ banners, whatsappNumber }: HeroBannerProps)
             {banners[current]?.subtitle || "Deliciously baked with the finest ingredients, crafted to bring joy to your everyday moments."}
           </p>
 
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 max-w-[250px] sm:max-w-none">
+          <div className="flex flex-row items-center gap-2.5 sm:gap-4 max-w-full sm:max-w-none">
             {banners[current]?.cta_text && banners[current]?.cta_link ? (
               <Link
                 href={banners[current].cta_link!}
-                className="inline-flex items-center justify-center gap-2 px-7 sm:px-9 py-3.5 bg-[#0B1B32] hover:bg-[#071322] text-white font-medium rounded-full shadow-md hover:shadow-lg active:scale-[0.98] transition-all text-sm tracking-wide text-center"
+                className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-9 py-2.5 sm:py-3.5 bg-[#0B1B32] hover:bg-[#071322] text-white font-medium rounded-lg sm:rounded-full shadow-md hover:shadow-lg active:scale-[0.98] transition-all text-xs sm:text-sm tracking-wide text-center whitespace-nowrap"
               >
                 {banners[current].cta_text} →
               </Link>
             ) : (
               <Link
                 href="/shop"
-                className="inline-flex items-center justify-center gap-2 px-7 sm:px-9 py-3.5 bg-[#0B1B32] hover:bg-[#071322] text-white font-medium rounded-full shadow-md hover:shadow-lg active:scale-[0.98] transition-all text-sm tracking-wide text-center"
+                className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-9 py-2.5 sm:py-3.5 bg-[#0B1B32] hover:bg-[#071322] text-white font-medium rounded-lg sm:rounded-full shadow-md hover:shadow-lg active:scale-[0.98] transition-all text-xs sm:text-sm tracking-wide text-center whitespace-nowrap"
               >
                 Shop Our Bakes →
               </Link>
@@ -222,9 +222,9 @@ export default function HeroBanner({ banners, whatsappNumber }: HeroBannerProps)
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white text-[#0B1B32] font-bold rounded-full border-2 border-[#0B1B32] shadow-md hover:shadow-lg active:scale-[0.98] transition-all text-xs sm:text-sm tracking-wider text-center"
+              className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3.5 sm:px-6 py-2.5 sm:py-3.5 bg-white text-[#0B1B32] font-bold rounded-lg sm:rounded-full border-2 border-[#0B1B32] shadow-md hover:shadow-lg active:scale-[0.98] transition-all text-[11px] sm:text-sm tracking-wider text-center whitespace-nowrap"
             >
-              <MessageCircle size={16} className="text-[#0B1B32]" />
+              <MessageCircle size={15} className="text-[#0B1B32]" />
               ORDER ON WHATSAPP
             </a>
           </div>

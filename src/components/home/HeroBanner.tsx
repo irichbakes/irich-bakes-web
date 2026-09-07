@@ -34,12 +34,12 @@ export default function HeroBanner({ banners, whatsappNumber }: HeroBannerProps)
 
   if (banners.length === 0) {
     return (
-      <section className="relative -mt-16 md:-mt-20 bg-[#FAF6F0] overflow-hidden min-h-[760px] sm:min-h-[820px] md:min-h-[640px] flex items-start md:items-center pt-24 sm:pt-28 md:pt-32 pb-16">
-        <div className="relative z-20 max-w-7xl mx-auto px-5 sm:px-6 w-full py-12 md:py-16">
+      <section className="relative -mt-16 md:-mt-20 bg-[#FAF6F0] overflow-hidden min-h-[760px] sm:min-h-[820px] md:min-h-[640px] flex items-start md:items-center pt-20 sm:pt-28 md:pt-32 pb-16">
+        <div className="relative z-20 max-w-7xl mx-auto px-5 sm:px-6 w-full py-8 sm:py-12 md:py-16">
           <div className="max-w-2xl">
-            <div className="flex items-center gap-3 mb-2 sm:mb-3">
-              <span className="hero-script text-3xl sm:text-4xl leading-none">Baked for</span>
-              <span className="hero-script-line shrink-0" />
+            <div className="flex items-center gap-2 sm:gap-3 mb-1 sm:mb-3">
+              <span className="hero-script text-2xl sm:text-4xl leading-none">Baked for</span>
+              <span className="hero-script-line shrink-0 max-w-[100px] sm:max-w-[180px]" />
               <svg
                 className="hero-script-heart shrink-0 rotate-[15deg]"
                 viewBox="0 0 24 24"
@@ -52,17 +52,17 @@ export default function HeroBanner({ banners, whatsappNumber }: HeroBannerProps)
                 <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
               </svg>
             </div>
-            <h1 className="hero-heading text-4xl sm:text-5xl md:text-6xl lg:text-[68px] font-bold leading-[1.12] tracking-tight mb-2">
+            <h1 className="hero-heading text-3xl sm:text-5xl md:text-6xl lg:text-[68px] font-bold leading-[1.12] tracking-tight mb-1 sm:mb-2">
               <span className="text-[#0B1B32]">Good Moments,</span>
               <br />
               <span className="text-[#B47A32]">Everyday.</span>
             </h1>
 
             {/* Decorative leaf divider */}
-            <div className="flex items-center gap-3 my-4 sm:my-5 max-w-[280px]">
+            <div className="flex items-center gap-2 sm:gap-3 my-2 sm:my-5 max-w-[240px] sm:max-w-[280px]">
               <div className="flex-1 h-[1px] bg-[#B47A32]/40" />
               <svg
-                className="w-6 h-4 shrink-0 text-[#B47A32]"
+                className="w-5 sm:w-6 h-3.5 sm:h-4 shrink-0 text-[#B47A32]"
                 viewBox="0 0 28 18"
                 fill="currentColor"
               >
@@ -72,7 +72,7 @@ export default function HeroBanner({ banners, whatsappNumber }: HeroBannerProps)
               <div className="flex-1 h-[1px] bg-[#B47A32]/40" />
             </div>
 
-            <p className="text-[#3A322D] text-sm sm:text-base md:text-lg mb-6 sm:mb-8 max-w-[290px] sm:max-w-xl leading-relaxed font-normal">
+            <p className="text-[#3A322D] text-xs sm:text-base md:text-lg mb-3.5 sm:mb-8 max-w-[280px] sm:max-w-xl leading-snug sm:leading-relaxed font-normal">
               Deliciously baked with the finest ingredients, crafted to bring joy to your everyday moments.
             </p>
             <div className="flex flex-row items-center gap-2.5 sm:gap-4 max-w-full sm:max-w-none">
@@ -146,11 +146,11 @@ export default function HeroBanner({ banners, whatsappNumber }: HeroBannerProps)
       })}
 
       {/* Content for Current Banner */}
-      <div className="relative z-20 max-w-7xl mx-auto px-5 sm:px-6 w-full pt-24 sm:pt-28 md:pt-32 pb-16 md:pb-20">
+      <div className="relative z-20 max-w-7xl mx-auto px-5 sm:px-6 w-full pt-20 sm:pt-28 md:pt-32 pb-14 md:pb-20">
         <div className="max-w-2xl text-left">
-          <div className="flex items-center gap-3 mb-2 sm:mb-3">
-            <span className="hero-script text-3xl sm:text-4xl leading-none">Baked for</span>
-            <span className="hero-script-line shrink-0" />
+          <div className="flex items-center gap-2 sm:gap-3 mb-1 sm:mb-3">
+            <span className="hero-script text-2xl sm:text-4xl leading-none">Baked for</span>
+            <span className="hero-script-line shrink-0 max-w-[100px] sm:max-w-[180px]" />
             <svg
               className="hero-script-heart shrink-0 rotate-[15deg]"
               viewBox="0 0 24 24"
@@ -163,7 +163,7 @@ export default function HeroBanner({ banners, whatsappNumber }: HeroBannerProps)
               <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
             </svg>
           </div>
-          <h1 className="hero-heading text-4xl sm:text-5xl md:text-6xl lg:text-[68px] font-bold leading-[1.12] tracking-tight mb-2">
+          <h1 className="hero-heading text-3xl sm:text-5xl md:text-6xl lg:text-[68px] font-bold leading-[1.12] tracking-tight mb-1 sm:mb-2">
             {banners[current]?.title ? (
               banners[current].title.split(/\r\n|\r|\n|<br\s*\/?>/gi).map((line, idx, arr) => (
                 <span
@@ -184,10 +184,10 @@ export default function HeroBanner({ banners, whatsappNumber }: HeroBannerProps)
           </h1>
 
           {/* Decorative leaf divider */}
-          <div className="flex items-center gap-3 my-4 sm:my-5 max-w-[280px]">
+          <div className="flex items-center gap-2 sm:gap-3 my-2 sm:my-5 max-w-[240px] sm:max-w-[280px]">
             <div className="flex-1 h-[1px] bg-[#B47A32]/40" />
             <svg
-              className="w-6 h-4 shrink-0 text-[#B47A32]"
+              className="w-5 sm:w-6 h-3.5 sm:h-4 shrink-0 text-[#B47A32]"
               viewBox="0 0 28 18"
               fill="currentColor"
             >
@@ -197,7 +197,7 @@ export default function HeroBanner({ banners, whatsappNumber }: HeroBannerProps)
             <div className="flex-1 h-[1px] bg-[#B47A32]/40" />
           </div>
 
-          <p className="text-[#3A322D] text-sm sm:text-base md:text-lg mb-6 sm:mb-8 max-w-[290px] sm:max-w-xl leading-relaxed font-normal">
+          <p className="text-[#3A322D] text-xs sm:text-base md:text-lg mb-3.5 sm:mb-8 max-w-[280px] sm:max-w-xl leading-snug sm:leading-relaxed font-normal">
             {banners[current]?.subtitle || "Deliciously baked with the finest ingredients, crafted to bring joy to your everyday moments."}
           </p>
 
